@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Phone, X, Send, User } from "lucide-react"
+import { X, Send, User, MessageCircle } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/components/ui/use-toast"
 
@@ -29,7 +29,7 @@ export default function WhatsAppButton() {
   return (
     <>
       <button onClick={handleClick} className="whatsapp-button" aria-label="Contact via WhatsApp">
-        {isOpen ? <X className="h-7 w-7" /> : <Phone className="h-7 w-7" />}
+        {isOpen ? <X className="h-7 w-7" /> : <MessageCircle className="h-7 w-7" />}
       </button>
 
       <div className={`whatsapp-chat ${isOpen ? "active" : ""}`}>
@@ -45,6 +45,17 @@ export default function WhatsAppButton() {
             Hello! If you have any questions about the trip, feel free to contact me.
           </div>
           <div className="whatsapp-message">WhatsApp: +852 98066356</div>
+          <div className="whatsapp-preview">
+            <img
+              src="https://images.unsplash.com/photo-1506970845246-18f21d533b20?q=80&w=2070&auto=format&fit=crop"
+              alt="Trip Preview"
+              className="whatsapp-preview-image"
+            />
+            <div className="whatsapp-preview-text">
+              <h4>香港日本之旅 | Hong Kong & Japan Trip 2025</h4>
+              <p>17天的冒險與文化體驗 | 17 Days of Adventure & Culture</p>
+            </div>
+          </div>
         </div>
         <div className="whatsapp-footer">
           <TooltipProvider>

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import {
-  Calendar,
+  CalendarDays,
   MapPin,
   Clock,
   Coffee,
@@ -30,6 +30,7 @@ import {
   Luggage,
   Car,
   Navigation,
+  Map,
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -1046,7 +1047,7 @@ export default function Timeline() {
       <Card className="border-primary/20">
         <CardHeader className="border-b border-border">
           <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-primary" />
+            <CalendarDays className="h-5 w-5 text-primary" />
             每日行程 | Daily Itinerary
           </CardTitle>
         </CardHeader>
@@ -1175,21 +1176,24 @@ function DayCard({
   }
 
   return (
-    <div id={`day-${day.day}`} className="timeline-card scroll-mt-24">
-      <div className="day-number">Day {day.day}</div>
+    <div id={`day-${day.day}`} className="timeline-card scroll-mt-28">
       <div className="flex flex-col md:flex-row">
         <div className="md:w-1/3 p-6 bg-white border-r border-gray-100">
-          <div className="mb-4">
-            <h3 className="text-xl font-semibold mb-1">
-              {day.date} | {day.locationChinese}
-            </h3>
-            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-              {day.location}
-            </Badge>
-            {day.description && <p className="mt-3 text-muted-foreground text-sm">{day.descriptionChinese}</p>}
+          <div className="mb-4 flex items-center gap-3">
+            <div className="day-badge">Day {day.day}</div>
+            <div>
+              <h3 className="text-xl font-semibold mb-1">
+                {day.date} | {day.locationChinese}
+              </h3>
+              <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                {day.location}
+              </Badge>
+            </div>
           </div>
 
-          <div className="space-y-6">
+          {day.description && <p className="mt-3 text-muted-foreground text-sm">{day.descriptionChinese}</p>}
+
+          <div className="space-y-6 mt-4">
             {day.activities.map((activity, idx) => (
               <div key={idx} className="activity-item">
                 <div className="activity-time">
@@ -1239,11 +1243,25 @@ function DayCard({
             ))}
           </div>
 
-          <div className="mt-6 flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-primary" />
+          <div className="mt-6">
+            {day.coordinates && (
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${day.coordinates.lat},${day.coordinates.lng}&travelmode=driving`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 p-2 rounded-md transition-colors"
+              >
+                <MapPin className="h-5 w-5" />
+                <span className="text-sm">導航到此地 | Navigate Here</span>
+              </a>
+            )}
+
             <Dialog open={openMap === day.mapUrl} onOpenChange={(open) => setOpenMap(open ? day.mapUrl : null)}>
               <DialogTrigger asChild>
-                <button className="text-sm underline">查看地圖 | View Map</button>
+                <button className="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 p-2 rounded-md transition-colors w-full mt-2">
+                  <Map className="h-5 w-5" />
+                  <span className="text-sm">查看地圖 | View Map</span>
+                </button>
               </DialogTrigger>
               <DialogContent className="max-w-3xl w-[90vw] bg-white">
                 <div className="aspect-video w-full">
@@ -1259,17 +1277,6 @@ function DayCard({
                 </div>
               </DialogContent>
             </Dialog>
-            {day.coordinates && (
-              <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${day.coordinates.lat},${day.coordinates.lng}&travelmode=driving`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-4 text-sm text-primary hover:text-primary/80 flex items-center gap-1"
-              >
-                <Navigation className="h-4 w-4" />
-                <span>導航到此地 | Navigate Here</span>
-              </a>
-            )}
           </div>
         </div>
 
