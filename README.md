@@ -109,6 +109,10 @@ pnpm build
 
 ---
 
+## 📫 Contact
+
+📧 pakmingc2@gmail.com
+
 ## 📄 License
 
 MIT License
